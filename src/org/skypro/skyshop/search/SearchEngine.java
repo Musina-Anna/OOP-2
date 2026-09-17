@@ -1,44 +1,33 @@
 package org.skypro.skyshop.search;
 
-public class SearchEngine {
-    private final Searchable[]items;
-    private int size=0;
+import java.util.LinkedList;
+import java.util.List;
 
-    public SearchEngine(int capacity){
-        items=new Searchable[capacity];
+public class SearchEngine {
+    private final List<Searchable> items = new LinkedList<>();
+
+    public void add(Searchable item) {
+        items.add(item);
     }
-    public void add(Searchable item){
-        if (size< items.length) {
-            items[size] = item;
-            size++;
-        }else {
-            System.out.println("Поисковая система переполнена");
-        }
-    }
-    public Searchable[]search(String query){
-        Searchable[]results=new Searchable[5];
-        int found=0;
-        String lowerQuery=query.toLowerCase();
-        for (int i = 0; i < items.length&&found<5; i++) {
-            Searchable item=items[i];
-            if (item!=null){
-                String term=item.getSearchTerm().toLowerCase();
-                if (term.contains(lowerQuery)){
-                    results[found]=item;
-                    found++;
-                }
+
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new LinkedList<>();
+        String lowerQuery = query.toLowerCase();
+
+        for (Searchable item : items) {
+            if (item.getSearchTerm().toLowerCase().contains(lowerQuery)) {
             }
         }
         return results;
     }
-public Searchable findBestMatch(String search)throws BestResultNotFound{
+
+    public Searchable findBestMatch(String search)throws BestResultNotFound{
     Searchable bestResult=null;
     int maxCount=0;
 
-    for(Searchable item: items){
-        if (item != null) {
-            String term=item.getSearchTerm();
-            int count=countOccurrences(term,search);
+    for (Searchable item:items){
+        if (item!=null){
+            int count=countOccurrences(item.getSearchTerm(),search);
             if (count>maxCount){
                 maxCount=count;
                 bestResult=item;
@@ -51,9 +40,7 @@ public Searchable findBestMatch(String search)throws BestResultNotFound{
     return bestResult;
     }
     private int countOccurrences(String source,String search){
-        if (search==null||search.isEmpty()){
-            return 0;
-        }
+        if (search==null||search.isEmpty())return 0;
         int count=0;
         int index=0;
         int sublndex=source.indexOf(search,index);
@@ -65,3 +52,5 @@ public Searchable findBestMatch(String search)throws BestResultNotFound{
         return count;
     }
 }
+
+
