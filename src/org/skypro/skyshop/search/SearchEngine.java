@@ -31,4 +31,37 @@ public class SearchEngine {
         }
         return results;
     }
+public Searchable findBestMatch(String search)throws BestResultNotFound{
+    Searchable bestResult=null;
+    int maxCount=0;
+
+    for(Searchable item: items){
+        if (item != null) {
+            String term=item.getSearchTerm();
+            int count=countOccurrences(term,search);
+            if (count>maxCount){
+                maxCount=count;
+                bestResult=item;
+            }
+        }
+    }
+    if (bestResult==null){
+        throw new BestResultNotFound(search);
+    }
+    return bestResult;
+    }
+    private int countOccurrences(String source,String search){
+        if (search==null||search.isEmpty()){
+            return 0;
+        }
+        int count=0;
+        int index=0;
+        int sublndex=source.indexOf(search,index);
+        while (sublndex!=-1){
+            count++;
+            index=sublndex+search.length();
+            sublndex=source.indexOf(search,index);
+        }
+        return count;
+    }
 }
