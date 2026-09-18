@@ -16,6 +16,7 @@ public class SearchEngine {
 
         for (Searchable item : items) {
             if (item.getSearchTerm().toLowerCase().contains(lowerQuery)) {
+                results.add(item);
             }
         }
         return results;
