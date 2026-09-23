@@ -11,30 +11,30 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class App {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("===Демонстрация корзины===");
-        ProductBasket basket=new ProductBasket();
-        basket.addProduct(new SimpleProduct("Хлеб",30));
-        basket.addProduct(new DiscountedProduct("Молоко",100,20));
+        ProductBasket basket = new ProductBasket();
+        basket.addProduct(new SimpleProduct("Хлеб", 30));
+        basket.addProduct(new DiscountedProduct("Молоко", 100, 20));
         basket.addProduct(new FixPriceProduct("Ручка "));
-        basket.addProduct(new SimpleProduct("Яблоко",50));
+        basket.addProduct(new SimpleProduct("Яблоко", 50));
 
-        basket.addProduct(new SimpleProduct("Сыр",200));
-        basket.addProduct(new SimpleProduct("Хлеб",35));
+        basket.addProduct(new SimpleProduct("Сыр", 200));
+        basket.addProduct(new SimpleProduct("Хлеб", 35));
 
         basket.printContents();
 
 
         System.out.println("\n===Удаление продукта 'Хлеб'===");
-        List<Product>removed=basket.removeProductByName("Хлеб");
-        if (removed.isEmpty()){
+        List<Product> removed = basket.removeProductByName("Хлеб");
+        if (removed.isEmpty()) {
             System.out.println("Список пуст");
-        }else {
+        } else {
             System.out.println("Удаленные продукты:");
-            for (Product p:removed){
+            for (Product p : removed) {
                 System.out.println(p.toString());
             }
         }
@@ -42,8 +42,8 @@ public class App {
         basket.printContents();
 
         System.out.println("\n===Удаление несуществующего продукта 'Шоколад'===");
-        List<Product>removedEmpty=basket.removeProductByName("Шоколад");
-        if (removedEmpty.isEmpty()){
+        List<Product> removedEmpty = basket.removeProductByName("Шоколад");
+        if (removedEmpty.isEmpty()) {
             System.out.println("Список пуст");
         }
         System.out.println("Содержимое корзины");
@@ -51,29 +51,29 @@ public class App {
 
 
         System.out.println("\n===Демонстрация поиска===");
-        SearchEngine searchEngine=new SearchEngine();
-        searchEngine.add(new SimpleProduct("Хлеб",30));
-        searchEngine.add(new DiscountedProduct("Молоко",100,20));
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.add(new SimpleProduct("Хлеб", 30));
+        searchEngine.add(new DiscountedProduct("Молоко", 100, 20));
         searchEngine.add(new FixPriceProduct("Ручка"));
-        searchEngine.add(new Article("Как выбрать хлеб","Хлеб бывает разный.Белый хлеб и черный хлеб."));
-        searchEngine.add(new Article("Польза молока","Молоко содержит кальций. Молоко полезно"));
+        searchEngine.add(new Article("Как выбрать хлеб", "Хлеб бывает разный.Белый хлеб и черный хлеб."));
+        searchEngine.add(new Article("Польза молока", "Молоко содержит кальций. Молоко полезно"));
 
         System.out.println("Поиск по 'хлеб':");
-        Map<String,Searchable>results=searchEngine.search("хлеб");
-        if (results.isEmpty()){
+        Set<Searchable> results = searchEngine.search("хлеб");
+        if (results.isEmpty()) {
             System.out.println("Ничего не найдено");
-        }else {
-            for (Searchable s:results.values()){
+        } else {
+            for (Searchable s : results) {
                 System.out.println(s.getStringRepresentation());
             }
         }
 
         System.out.println("\nПоиск лучшего совпадения для 'молоко':");
         try {
-            Searchable bestMatch= searchEngine.findBestMatch("молоко");
-            System.out.println("Лучший результат:"+bestMatch.getStringRepresentation());
+            Searchable bestMatch = searchEngine.findBestMatch("молоко");
+            System.out.println("Лучший результат:" + bestMatch.getStringRepresentation());
         } catch (BestResultNotFound e) {
-            System.out.println("Исключение:"+e.getMessage());
+            System.out.println("Исключение:" + e.getMessage());
         }
     }
 }
