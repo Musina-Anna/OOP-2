@@ -11,6 +11,7 @@ import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args){
@@ -58,11 +59,11 @@ public class App {
         searchEngine.add(new Article("Польза молока","Молоко содержит кальций. Молоко полезно"));
 
         System.out.println("Поиск по 'хлеб':");
-        List<Searchable>results=searchEngine.search("хлеб");
+        Map<String,Searchable>results=searchEngine.search("хлеб");
         if (results.isEmpty()){
             System.out.println("Ничего не найдено");
         }else {
-            for (Searchable s:results){
+            for (Searchable s:results.values()){
                 System.out.println(s.getStringRepresentation());
             }
         }
