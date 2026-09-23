@@ -19,34 +19,30 @@ public class ProductBasket {
         products.get(name).add(product);
     }
 
-    public int getTotalPrice() {
-        int total = 0;
-        for (List<Product> list : products.values()) {
-            for (Product p : list) {
-                total += p.getPrice();
-            }
-        }
-        return total;
+    public int getTotalPrice(){
+        return products.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
-    public void printContents() {
-        if (products.isEmpty()) {
+    private long getSpecialCount(){
+        return products.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
+    }
+    public void printContents(){
+        if (products.isEmpty()){
             System.out.println("В корзине пусто");
             return;
         }
-        int specialCount = 0;
-        for (List<Product> list : products.values()) {
-            for (Product p : list) {
-                System.out.println(p.toString());
-                if (p.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        }
-        System.out.println("Итого:" + getTotalPrice());
-        System.out.println("Специальных товаров:" + specialCount);
+        products.values().stream()
+                .flatMap(List::stream)
+                .forEach(p-> System.out.println(p.toString()));
+        System.out.println("Итого: "+getTotalPrice());
+        System.out.println("Специальных товаров: "+getSpecialCount());
     }
-
 
     public boolean containsProduct(String name) {
         return products.containsKey(name) && !products.get(name).isEmpty();
